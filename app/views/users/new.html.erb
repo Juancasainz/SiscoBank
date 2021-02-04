@@ -1,0 +1,140 @@
+
+
+<h3>Nuevo usuario</h3>
+
+<!-- Lista de errores de validaciones (si los hay) -->
+
+<%= form_for :user, url: users_path do |u| %>
+	<% if @user.errors.any? %>
+		<% @user.errors.full_messages.each do |msg| %>
+		<div style="color: red">
+			<%= msg %>	
+		</div>
+		<% end %>
+	<% end %>
+
+<br>
+	<div class="container">
+		<label>
+        <input name="user[tipo]" type="radio" checked class="with-gap" value="Natural" id="user_tipo_natural" onclick="docs()" />
+        <span>Natural</span>
+      </label>
+      &nbsp
+      <label>
+        <input name="user[tipo]" type="radio" class="with-gap" value="Juridica" id="user_tipo_juridica" onclick="docs()"/>
+        <span>Juridica</span>
+      </label>
+	</div>
+	<br>
+
+	<div>
+		<label id="nombrelabel">Nombre y apellido</label><br>
+		<%= u.text_field :nombre %><br><br>
+	</div>
+
+	<div>
+		<label id="doclabel">Cedula de identidad</label><br>
+		<div class="row">
+			<div class="col s1" id="ddcontainer">
+				<a class='dropdown-trigger btn'  data-target='dropdown1' id="dd" value="V-">V-</a>
+			  <ul id='dropdown1' class='dropdown-content'>
+			    <li onclick="refresh('E-')"><a>E-</a></li>
+			    <li onclick="refresh('C-')"><a>C-</a></li>
+			    <li onclick="refresh('V-')"><a>V-</a></li>
+			  </ul>
+			</div>
+			<div class="col s11">
+				<input type="text" name="user[ids]" id="user_ids" >
+			</div>
+		</div>
+	</div>
+
+	<div class="row valign-wrapper">
+		<div class="col s6">
+			<label>Fecha de Emision</label><br>
+		<%= u.date_field :emision, as: :date, value: u.object.try(:strftime,"%d/%m/%Y"), class: 'form-control' %><br>
+		</div>
+		<div class="col s6">
+			<label>Vencimiento</label><br>
+		<%= u.date_field :vencimiento %><br>
+		</div>
+	</div>
+
+	<br>
+		<div>
+		<label>Email:</label><br>
+		<%= u.text_field :correo %><br><br>
+	</div>
+	<div class="row valign-wrapper">
+		<div class="col s6">
+			<label>Telefono:</label><br>
+			<%= u.text_field :tlf1 %><br><br>
+		</div>
+		<div class="col s6">
+			<label>Telefono Adicional:</label><br>
+			<%= u.text_field :tlf2 %><br><br>
+		</div>
+	</div>
+
+
+<!-- Este boton primero agrega el prefijo del tipo de identificaciones para despues ser guardado -->
+	<div class="container">
+		<button class="btn waves-effect waves-light right" type="submit" name="action" onclick="change()">Guardar
+    	<i class="material-icons right">send</i>
+  		</button><br>
+	</div>
+	<br><br>
+<% end %>
+
+
+<script type="text/javascript">
+
+// Inicia el dropdown list
+
+$(document).ready(function(){
+	var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems);
+    refresh('V-')
+})
+
+//Cambia el dropdown dependiendo del tipo de persona
+function docs(){
+if (document.getElementById('user_tipo_natural').checked){
+		document.getElementById('doclabel').innerHTML ="Cedula de identidad";
+		document.getElementById('nombrelabel').innerHTML = "Nombre y apellido";
+
+		document.getElementById("ddcontainer").innerHTML=`<a class='dropdown-trigger btn'  data-target='dropdown1' id="dd" value="V-">V-</a>
+			  <ul id='dropdown1' class='dropdown-content'>
+			    <li onclick="refresh('E-')"><a>E-</a></li>
+			    <li onclick="refresh('C-')"><a>C-</a></li>
+			    <li onclick="refresh('V-')"><a>V-</a></li>
+			  </ul>`
+			  var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems);
+	} else {
+		document.getElementById('doclabel').innerHTML ="Rif";
+		document.getElementById('nombrelabel').innerHTML = "Empresa o razon social";
+		document.getElementById("ddcontainer").innerHTML=`<a class='dropdown-trigger btn'  data-target='dropdown1' id="dd" value="J-">J-</a>
+			  <ul id='dropdown1' class='dropdown-content'>
+			    <li onclick="refresh('J-')"><a>J-</a></li>
+			    <li onclick="refresh('G-')"><a>G-</a></li>
+			  </ul>`
+			  var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems);
+	}
+}
+
+//Cambia el value del documento dependiendo del 
+//valor del Dropdown
+ function change(){
+ 	document.getElementById('user_ids').value = 
+ 	document.getElementById('dd').value + document.getElementById('user_ids').value
+ }
+
+//Refresca el valor del dropdown
+ function refresh(letra){
+ 	document.getElementById('dd').innerHTML = letra
+ 	document.getElementById('dd').value = letra
+ }
+	
+</script>

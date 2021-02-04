@@ -1,0 +1,23 @@
+
+<h3>Usuarios actuales</h3>
+
+<% if @user.nil? || @user.empty?  %>
+	<h5>Todavia no hay usuarios :c</h5>
+<% end %>
+<% @user.each do |user| %> <!-- Lista de usuarios -->
+<div class="container">
+<div class="row">
+	<div class="col s8 ">
+	<h5> <%= user.nombre %></h5>
+	<p class="valign-wrapper"> <i class="material-icons">contact_phone</i>&nbsp<%= user.tlf1 %> </p>
+	</div>
+	<br>
+	<div class="col s4 container">
+	<a class="waves-effect waves-light btn "
+	href="/users/<%= user.id %>">Ver Mas</a>
+	</div>
+</div>
+	<div class="divider"></div>
+</div>
+<% end %>
+

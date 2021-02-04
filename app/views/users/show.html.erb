@@ -1,0 +1,40 @@
+<style type="text/css">
+	span {
+		font-size: 15px
+	}
+	.materialize-icons{
+		display: inline-flex;
+		vertical-align: top;
+	}
+</style>
+
+<h2><%= @user.nombre %></h2>
+<div class="container">
+
+		<p>Persona <%= @user.tipo %></p>
+		
+		<% if @user.tipo == 'Natural' %>
+			<label>Cedula de identidad:</label>&nbsp&nbsp&nbsp
+		<% else %>
+			<label>RIF:</label>
+		<% end %>
+		<span><%= @user.ids %></span><br>
+		<label>Fecha de emision:</label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+		<span><%= @user.emision.strftime('%d-%m-%Y') %></span><br>
+		<label>Fecha de vencimiento:</label>
+		<span><%= @user.vencimiento.strftime('%d-%m-%Y') %></span>
+		<div class="col s5">
+		<h6>Contacto</h6>
+		<span class="valign-wrapper"> <i class="material-icons">contact_phone</i>&nbsp<%= @user.tlf1 %></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+		<span class="center"><%= @user.tlf2 %></span><br>
+		<span class="valign-wrapper"><i class="material-icons">contact_mail</i>&nbsp<%= @user.correo %></span>
+</div>
+</div>
+
+<br>
+<div class="center">
+	<a class="waves-effect waves-light btn "
+	href="/users/<%= @user.id %>/edit">Editar</a>&nbsp
+	<a data-confirm="Estas seguro?" class="waves-effect waves-light btn red" rel="#nofollow" data-method="delete" href="/users/<%= @user.id %>">Eliminar</a>
+</div>
+
